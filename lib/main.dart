@@ -1,12 +1,22 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:mx_player_clone/all_screen.dart';
+import 'package:mx_player_clone/bottomnavBar.dart';
+import 'package:mx_player_clone/gold.dart';
+import 'package:mx_player_clone/login.dart';
 import 'package:mx_player_clone/movie_screen.dart';
 import 'package:mx_player_clone/mxshorts.dart';
 import 'package:mx_player_clone/mxvideos.dart';
 import 'package:mx_player_clone/newandFree_screen.dart';
 import 'package:mx_player_clone/shows_screen.dart';
+import 'package:mx_player_clone/signup.dart';
+import 'live.dart';
+import 'local.dart';
+import 'mxtube.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(const MyApp());
 }
 
@@ -20,7 +30,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       debugShowCheckedModeBanner: false,
-      home: const MyHomePage(),
+      home: Login_screen(),
     );
   }
 }
@@ -33,6 +43,16 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  int selectedindex = 1;
+
+  var screens = [Local(), MyHomePage(), live(), mxtube(), gold()];
+
+  void onitemtapped(int index) {
+    setState(() {
+      selectedindex = index;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -128,6 +148,30 @@ class _MyHomePageState extends State<MyHomePage> {
           mxvideos(),
           mxshorts()
         ]),
+        bottomNavigationBar: BottomNavigationBar(
+          items: [
+            BottomNavigationBarItem(
+                icon: Column(
+                  children: [
+                    Icon(Icons.folder),
+                  ],
+                ),
+                label: "Local"),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.play_circle), label: "Video"),
+            BottomNavigationBarItem(icon: Icon(Icons.stream), label: "Live"),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.live_tv_rounded), label: "Mxtube"),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.play_circle), label: "gold")
+          ],
+          backgroundColor: Colors.white,
+          selectedItemColor: Colors.blue,
+          unselectedItemColor: Colors.black45,
+          elevation: 0,
+          //currentIndex: selectedindex,
+          //onTap: onitemtapped,
+        ),
       ),
     );
   }
